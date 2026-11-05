@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { nombreCategoria } from '../lib/categorias';
+
+interface Props {
+  noticias: CollectionEntry<'noticias'>[];
+}
+
+// Lista ordenada por fecha (no por lecturas): por eso se titula "Más recientes".
+// Cuando haya analítica real se puede volver a un ranking de "Lo más leído".
+const { noticias } = Astro.props;
+---
+
+<aside class="section" aria-labelledby="mas-recientes" style="background:var(--bg);border-radius:10px;padding:1.5rem">
+  <div class="section-header" style="border-color:var(--navy)">
+    <h2 id="mas-recientes" style="font-size:1.15rem">Más recientes</h2>
+  </div>
+  <ol class="most-read">
+    {noticias.slice(0, 5).map((n) => (
+      <li>
+        <div>
+          <a href={`/noticias/${n.slug}`}>{n.data.titulo}</a>
+          <p class="meta" style="margin-top:.15rem">{nombreCategoria(n.data.categoria)}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+</aside>

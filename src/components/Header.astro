@@ -1,0 +1,74 @@
+---
+const categorias = [
+  { slug: '', nombre: 'Inicio' },
+  { slug: 'politica', nombre: 'Política' },
+  { slug: 'sociedad', nombre: 'Sociedad' },
+  { slug: 'policiales', nombre: 'Policiales' },
+  { slug: 'deportes', nombre: 'Deportes' },
+  { slug: 'economia', nombre: 'Economía' },
+  { slug: 'cultura', nombre: 'Cultura' },
+  { slug: 'region', nombre: 'Región' },
+];
+
+const path = Astro.url.pathname;
+const activa = (slug: string) =>
+  slug === '' ? path === '/' : path.startsWith(`/categoria/${slug}`);
+---
+
+<header>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span id="fecha-hoy" style="text-transform: capitalize" aria-live="off">&nbsp;</span>
+      <span>Clorinda, Formosa</span>
+    </div>
+  </div>
+
+  <div class="masthead">
+    <div class="container masthead-inner">
+      <a href="/" class="logo" aria-label="Nuestra Clorinda — ir al inicio">
+        <!-- Para usar un logotipo propio, reemplazar el texto por:
+             <img src="/logo.svg" alt="Nuestra Clorinda" width="270" height="48" /> -->
+        Nuestra <span>Clorinda</span>
+      </a>
+      <p class="meta">Portal de noticias de Clorinda, Formosa.</p>
+    </div>
+  </div>
+
+  <nav class="nav" aria-label="Navegación principal">
+    <div class="container">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="menu-principal">
+        ☰ Menú
+      </button>
+      <ul class="nav-list" id="menu-principal">
+        {categorias.map((c) => (
+          <li>
+            <a
+              href={c.slug ? `/categoria/${c.slug}` : '/'}
+              aria-current={activa(c.slug) ? 'page' : undefined}
+            >
+              {c.nombre}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // El sitio es estático: la fecha de hoy se calcula en el navegador del lector.
+  const fechaHoy = document.getElementById('fecha-hoy');
+  if (fechaHoy) {
+    fechaHoy.textContent = new Intl.DateTimeFormat('es-AR', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+      timeZone: 'America/Argentina/Cordoba',
+    }).format(new Date());
+  }
+
+  const toggle = document.querySelector('.nav-toggle');
+  const menu = document.getElementById('menu-principal');
+  toggle?.addEventListener('click', () => {
+    const abierto = menu?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(abierto));
+  });
+</script>

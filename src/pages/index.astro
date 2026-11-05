@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import BreakingNews from '../components/BreakingNews.astro';
+import FeaturedNews from '../components/FeaturedNews.astro';
+import NewsCard from '../components/NewsCard.astro';
+import CategorySection from '../components/CategorySection.astro';
+import MostRead from '../components/MostRead.astro';
+import Advertisement from '../components/Advertisement.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const todas = await getCollection('noticias', ({ data }) => !data.borrador);
+const ordenadas = todas.sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+
+const principal = ordenadas.find((n) => n.data.destacada) ?? ordenadas[0];
+const secundarias = ordenadas.filter((n) => n.slug !== principal?.slug).slice(0, 4);
+const ultimas = ordenadas.filter((n) => ![principal, ...secundarias].includes(n)).slice(0, 6);
+
+const categorias = [
+  { slug: 'politica', nombre: 'Política' },
+  { slug: 'sociedad', nombre: 'Sociedad' },
+  { slug: 'policiales', nombre: 'Policiales' },
+  { slug: 'deportes', nombre: 'Deportes' },
+  { slug: 'economia', nombre: 'Economía' },
+  { slug: 'cultura', nombre: 'Cultura' },
+  { slug: 'region', nombre: 'Región' },
+];
+
+const porCategoria = (slug: string) =>
+  ordenadas.filter((n) => n.data.categoria === slug && n.slug !== principal?.slug);
+---
+
+<BaseLayout
+  title="Nuestra Clorinda — Portal de noticias de Clorinda, Formosa"
+  description="Noticias de Clorinda, Formosa: política, sociedad, policiales, deportes, economía, cultura y región. Información actualizada todos los días."
+>
+  <Header slot="header" />
+  <BreakingNews noticias={ordenadas} />
+  <Advertisement formato="leaderboard" />
+
+  {principal && <FeaturedNews destacada={principal} secundarias={secundarias} />}
+
+  <Advertisement formato="inarticle" />
+
+  <div class="container section grid layout-sidebar">
+    <section aria-labelledby="ultimas">
+      <div class="section-header">
+        <h2 id="ultimas">Últimas noticias</h2>
+        <a href="/noticias/">Ver todas las noticias</a>
+      </div>
+      <div class="grid grid-2">
+        {ultimas.map((n) => <NewsCard noticia={n} />)}
+      </div>
+      <p class="load-more">
+        <a class="btn" href="/noticias/">Ver más noticias</a>
+      </p>
+    </section>
+    <MostRead noticias={ordenadas} />
+  </div>
+
+  <Advertisement formato="leaderboard" />
+
+  {categorias.map((c) => (
+    <CategorySection categoria={c} noticias={porCategoria(c.slug)} />
+  ))}
+
+  <Footer slot="footer" />
+</BaseLayout>

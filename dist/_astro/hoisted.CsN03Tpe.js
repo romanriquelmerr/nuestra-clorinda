@@ -1,0 +1,1 @@
+import"./hoisted.Cbl3HdOT.js";document.querySelector("[data-copy]")?.addEventListener("click",async e=>{const t=e.currentTarget;try{await navigator.clipboard.writeText(location.href),t.textContent="✓ Enlace copiado",setTimeout(()=>t.textContent="⧉ Copiar enlace",2500)}catch{t.textContent="No se pudo copiar"}});

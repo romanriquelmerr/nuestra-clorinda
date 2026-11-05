@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { nombreCategoria } from '../lib/categorias';
+import { fechaCorta as fecha } from '../lib/fechas';
+
+interface Props {
+  destacada: CollectionEntry<'noticias'>;
+  secundarias: CollectionEntry<'noticias'>[];
+}
+
+const { destacada, secundarias } = Astro.props;
+---
+
+<section aria-labelledby="principal">
+  <div class="container hero">
+    <a href={`/noticias/${destacada.slug}`} class="hero-img" aria-hidden="true" tabindex="-1">
+      <Image
+        src={destacada.data.imagen}
+        alt=""
+        widths={[640, 960, 1280]}
+        sizes="(min-width: 900px) 60vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </a>
+    <div>
+      <span class="kicker">{nombreCategoria(destacada.data.categoria)}</span>
+      <h1 class="hero-title" id="principal">
+        <a href={`/noticias/${destacada.slug}`}>{destacada.data.titulo}</a>
+      </h1>
+      <p class="hero-excerpt">{destacada.data.bajada}</p>
+      <p class="meta">
+        Publicado el {fecha(destacada.data.fecha)} · Por {destacada.data.autor}
+      </p>
+    </div>
+  </div>
+
+  {secundarias.length > 0 && (
+    <div class="container grid grid-4" style="margin-bottom:2rem">
+      {secundarias.map((n) => (
+        <article class="card fade-in">
+          <a href={`/noticias/${n.slug}`} class="card-img-wrap" aria-hidden="true" tabindex="-1">
+            <Image class="card-img" src={n.data.imagen} alt="" widths={[320, 640]} sizes="(min-width:900px) 25vw, 100vw" loading="lazy" />
+          </a>
+          <div class="card-body">
+            <span class="kicker">{nombreCategoria(n.data.categoria)}</span>
+            <h3 class="card-title">
+              <a href={`/noticias/${n.slug}`}>{n.data.titulo}</a>
+            </h3>
+            <p class="meta">{fecha(n.data.fecha)}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  )}
+</section>

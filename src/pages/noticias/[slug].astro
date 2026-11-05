@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import Advertisement from '../../components/Advertisement.astro';
+import { nombreCategoria } from '../../lib/categorias';
+import { fechaHora } from '../../lib/fechas';
+import '../../styles/global.css';
+
+export async function getStaticPaths() {
+  const noticias = await getCollection('noticias', ({ data }) => !data.borrador);
+  return noticias.map((n) => ({
+    params: { slug: n.slug },
+    props: { noticia: n },
+  }));
+}
+
+const { noticia } = Astro.props;
+const { Content } = await noticia.render();
+const fechaFmt = fechaHora(noticia.data.fecha);
+
+const relacionadas = (await getCollection('noticias', ({ data, slug }) =>
+  !data.borrador && data.categoria === noticia.data.categoria && slug !== noticia.slug
+)).sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf()).slice(0, 3);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: noticia.data.titulo,
+  description: noticia.data.bajada,
+  image: new URL(noticia.data.imagen.src, Astro.site ?? Astro.url).href,
+  datePublished: noticia.data.fecha.toISOString(),
+  dateModified: noticia.data.fecha.toISOString(),
+  author: { '@type': noticia.data.autor === 'Redacción' ? 'Organization' : 'Person', name: noticia.data.autor },
+  publisher: { '@type': 'Organization', name: 'Nuestra Clorinda' },
+  mainEntityOfPage: Astro.url.href,
+};
+---
+
+<BaseLayout
+  title={`${noticia.data.titulo} — Nuestra Clorinda`}
+  description={noticia.data.bajada}
+  image={noticia.data.imagen.src}
+  type="article"
+>
+  <Fragment slot="header">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <Header />
+  </Fragment>
+
+  <Breadcrumbs items={[
+    { nombre: 'Inicio', url: '/' },
+    { nombre: nombreCategoria(noticia.data.categoria), url: `/categoria/${noticia.data.categoria}` },
+    { nombre: noticia.data.titulo },
+  ]} />
+
+  <article class="container article section">
+    <span class="kicker">{nombreCategoria(noticia.data.categoria)}</span>
+    <h1>{noticia.data.titulo}</h1>
+    <p class="excerpt">{noticia.data.bajada}</p>
+    <p class="meta">
+      Publicado el {fechaFmt} · Por {noticia.data.autor}
+    </p>
+
+    <figure style="margin:1.5rem 0">
+      <Image
+        src={noticia.data.imagen}
+        alt={noticia.data.titulo}
+        widths={[640, 1024, 1600]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        style="width:100%;border-radius:10px"
+      />
+      {noticia.data.epigrafe && (
+        <figcaption class="meta" style="margin-top:.4rem">{noticia.data.epigrafe}</figcaption>
+      )}
+    </figure>
+
+    <div class="article-body">
+      <Content />
+    </div>
+
+    <ShareButtons titulo={noticia.data.titulo} />
+  </article>
+
+  <Advertisement formato="inarticle" />
+
+  {relacionadas.length > 0 && (
+    <section class="container section" aria-labelledby="relacionadas">
+      <div class="section-header">
+        <h2 id="relacionadas">Seguir leyendo</h2>
+      </div>
+      <div class="grid grid-3">
+        {relacionadas.map((n) => <NewsCard noticia={n} />)}
+      </div>
+    </section>
+  )}
+
+  <Footer slot="footer" />
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+// NO está incluido en la portada hasta tener un proveedor real.
+// Para activarlo: conectar Buttondown/Mailchimp y volver a importarlo en index.astro.
+// El formulario envía a un endpoint propio. Conectar con un proveedor real
+// (Mailchimp, Buttondown, etc.) antes de activar la suscripción en producción.
+---
+
+<section class="container section" aria-labelledby="newsletter">
+  <div class="newsletter">
+    <h2 id="newsletter">Recibí las noticias más importantes</h2>
+    <p>Suscribite al boletín y enterate primero de lo que pasa en Clorinda.</p>
+    <form action="/api/newsletter" method="post">
+      <label for="email-newsletter" class="skip-link">Correo electrónico</label>
+      <input
+        type="email"
+        id="email-newsletter"
+        name="email"
+        placeholder="Tu correo electrónico"
+        required
+      />
+      <button type="submit" class="btn">Suscribirme</button>
+    </form>
+  </div>
+</section>

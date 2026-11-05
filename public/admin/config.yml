@@ -1,0 +1,77 @@
+# ─────────────────────────────────────────────────────────────────
+# Decap CMS — Nuestra Clorinda
+#
+# PRODUCCIÓN (GitHub OAuth vía Cloudflare Worker):
+#   1. Crear una GitHub OAuth App:
+#      GitHub → Settings → Developer settings → OAuth Apps → New OAuth App
+#      - Homepage URL: https://tudominio.com
+#      - Authorization callback URL: https://tu-worker.tu-usuario.workers.dev/callback
+#   2. Desplegar el Worker (ver workers/oauth/):
+#      cd workers/oauth && npx wrangler deploy
+#      npx wrangler secret put GITHUB_CLIENT_ID
+#      npx wrangler secret put GITHUB_CLIENT_SECRET
+#   3. Completar abajo: repo, branch y auth_endpoint del Worker.
+#
+# DESARROLLO LOCAL:
+#   Comentar todo el bloque `backend` y usar `npx decap-server`.
+# ─────────────────────────────────────────────────────────────────
+backend:
+  name: github
+  repo: TU_USUARIO/TU_REPOSITORIO      # ← REEMPLAZAR
+  branch: main
+  # auth_endpoint: https://tu-worker.tu-usuario.workers.dev/auth   # ← REEMPLAZAR (producción)
+
+# Descomentar para desarrollo local con decap-server:
+# local_backend: true
+
+# Las imágenes se guardan junto a cada noticia (src/content/noticias/) para que
+# Astro las optimice. Ver `media_folder: ""` en la colección más abajo.
+media_folder: public/uploads
+public_folder: /uploads
+
+locale: es
+
+collections:
+  - name: noticias
+    label: Noticias
+    label_singular: Noticia
+    folder: src/content/noticias
+    media_folder: ""          # imagen guardada en la misma carpeta que la noticia
+    public_folder: "./"       # y referenciada como ./archivo.jpg
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sortable_fields: ["fecha", "titulo"]
+    view_filters:
+      - label: Borradores
+        field: borrador
+        pattern: true
+      - label: Última hora
+        field: ultimaHora
+        pattern: true
+      - label: Destacadas
+        field: destacada
+        pattern: true
+    fields:
+      - { label: "Título", name: "titulo", widget: "string", required: true }
+      - { label: "Bajada", name: "bajada", widget: "text", required: true }
+      - { label: "Imagen principal", name: "imagen", widget: "image", required: true }
+      - label: "Categoría"
+        name: "categoria"
+        widget: "select"
+        required: true
+        options:
+          - { label: "Política", value: "politica" }
+          - { label: "Sociedad", value: "sociedad" }
+          - { label: "Policiales", value: "policiales" }
+          - { label: "Deportes", value: "deportes" }
+          - { label: "Economía", value: "economia" }
+          - { label: "Cultura", value: "cultura" }
+          - { label: "Región", value: "region" }
+      - { label: "Fecha", name: "fecha", widget: "datetime", required: true, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "DD/MM/YYYY", time_format: "HH:mm", picker_utc: false }
+      - { label: "Autor", name: "autor", widget: "string", default: "Redacción", required: false }
+      - { label: "Epígrafe de imagen", name: "epigrafe", widget: "string", required: false }
+      - { label: "Noticia destacada (portada)", name: "destacada", widget: "boolean", default: false }
+      - { label: "Mostrar en ÚLTIMA HORA", name: "ultimaHora", widget: "boolean", default: false }
+      - { label: "Borrador (no publicar aún)", name: "borrador", widget: "boolean", default: false }
+      - { label: "Etiquetas", name: "etiquetas", widget: "list", required: false, allow_add: true }
+      - { label: "Cuerpo de la noticia", name: "body", widget: "markdown", required: true }

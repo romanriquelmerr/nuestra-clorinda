@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { nombreCategoria } from '../lib/categorias';
+import { fechaCorta } from '../lib/fechas';
+
+interface Props {
+  noticia: CollectionEntry<'noticias'>;
+  loading?: 'lazy' | 'eager';
+}
+
+const { noticia, loading = 'lazy' } = Astro.props;
+const fecha = fechaCorta(noticia.data.fecha);
+---
+
+<article class="card fade-in">
+  <a href={`/noticias/${noticia.slug}`} class="card-img-wrap" aria-hidden="true" tabindex="-1">
+    <Image
+      class="card-img"
+      src={noticia.data.imagen}
+      alt=""
+      widths={[320, 640]}
+      sizes="(min-width:900px) 33vw, 100vw"
+      loading={loading}
+    />
+  </a>
+  <div class="card-body">
+    <span class="kicker">{nombreCategoria(noticia.data.categoria)}</span>
+    <h3 class="card-title">
+      <a href={`/noticias/${noticia.slug}`}>{noticia.data.titulo}</a>
+    </h3>
+    <p class="meta" style="color:var(--text-2);font-size:.9375rem;margin:.25rem 0">
+      {noticia.data.bajada.slice(0, 110)}…
+    </p>
+    <p class="meta">{fecha}</p>
+  </div>
+</article>

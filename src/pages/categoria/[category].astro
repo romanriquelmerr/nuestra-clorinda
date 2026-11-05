@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import MostRead from '../../components/MostRead.astro';
+import Advertisement from '../../components/Advertisement.astro';
+import '../../styles/global.css';
+
+export async function getStaticPaths() {
+  // Debe definirse DENTRO de getStaticPaths: Astro la ejecuta fuera del resto de la página.
+  const CATEGORIAS: Record<string, { nombre: string; descripcion: string }> = {
+    politica: { nombre: 'Política', descripcion: 'Información sobre la gestión municipal, el consejo deliberante y la vida política local.' },
+    sociedad: { nombre: 'Sociedad', descripcion: 'Historias de la comunidad, servicios, salud, educación y temas que importan a los vecinos.' },
+    policiales: { nombre: 'Policiales', descripcion: 'El relevamiento policial y judicial de la zona, con información verificada.' },
+    deportes: { nombre: 'Deportes', descripcion: 'Resultados, actualidad y el deporte amateur y profesional de la región.' },
+    economia: { nombre: 'Economía', descripcion: 'Actualidad comercial, empleo, producción local y temas económicos que impactan en la ciudad.' },
+    cultura: { nombre: 'Cultura', descripcion: 'Agenda cultural, espectáculos, arte y las propuestas para disfrutar en la ciudad.' },
+    region: { nombre: 'Región', descripcion: 'Todo lo que pasa en los pueblos y ciudades vecinas de la región.' },
+  };
+  return Object.entries(CATEGORIAS).map(([category, info]) => ({
+    params: { category },
+    props: info,
+  }));
+}
+
+const { category } = Astro.params;
+const { nombre, descripcion } = Astro.props;
+
+const noticias = (await getCollection('noticias', ({ data }) =>
+  !data.borrador && data.categoria === category
+)).sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+---
+
+<BaseLayout
+  title={`${nombre} — Nuestra Clorinda`}
+  description={`Todas las noticias de ${nombre.toLowerCase()} en Nuestra Clorinda. ${descripcion}`}
+>
+  <Header slot="header" />
+  <Breadcrumbs items={[
+    { nombre: 'Inicio', url: '/' },
+    { nombre },
+  ]} />
+
+  <div class="container section grid layout-sidebar">
+    <section>
+      <div class="section-header">
+        <h1 style="font-size:1.75rem">{nombre}</h1>
+      </div>
+      <p class="meta" style="margin-bottom:1.5rem">{descripcion}</p>
+      {noticias.length === 0 ? (
+        <p>Aún no hay noticias publicadas en esta sección.</p>
+      ) : (
+        <div class="grid grid-2">
+          {noticias.map((n) => <NewsCard noticia={n} />)}
+        </div>
+      )}
+    </section>
+    <MostRead noticias={noticias} />
+  </div>
+
+  <Advertisement formato="rect" />
+  <Footer slot="footer" />
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  noticias: CollectionEntry<'noticias'>[];
+}
+
+// Muestra la más reciente marcada como última hora. Si no hay ninguna, no se renderiza.
+const { noticias } = Astro.props;
+const ultimaHora = noticias.filter((n) => n.data.ultimaHora);
+---
+
+{ultimaHora.length > 0 && (
+  <div class="breaking" role="alert">
+    <div class="container breaking-inner">
+      <span class="breaking-label">ÚLTIMA HORA</span>
+      <a class="breaking-text" href={`/noticias/${ultimaHora[0].slug}`}>
+        {ultimaHora[0].data.titulo}
+      </a>
+    </div>
+  </div>
+)}

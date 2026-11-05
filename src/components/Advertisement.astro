@@ -1,0 +1,23 @@
+---
+interface Props {
+  formato: 'leaderboard' | 'rect' | 'inarticle';
+  activo?: boolean;
+}
+
+const { formato, activo = false } = Astro.props;
+const tamanios = {
+  leaderboard: 'ad-banner ad-leaderboard',
+  rect: 'ad-banner ad-rect',
+  inarticle: 'ad-banner ad-inarticle',
+};
+// activo=false → no se renderiza nada (sin huecos ni saltos de contenido).
+// Integración AdSense futura: cargar el script oficial de AdSense dentro del
+// div .ad-banner cuando se tenga la cuenta aprobada.
+---
+
+{activo && (
+  <div class="ad-slot" role="complementary" aria-label="Publicidad">
+    <p class="ad-label">Publicidad</p>
+    <div class={tamanios[formato]}></div>
+  </div>
+)}

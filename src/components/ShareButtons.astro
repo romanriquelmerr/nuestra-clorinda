@@ -1,0 +1,33 @@
+---
+interface Props {
+  titulo: string;
+}
+
+const { titulo } = Astro.props;
+const url = Astro.url.href;
+const mensaje = encodeURIComponent(`${titulo} — ${url}`);
+const waUrl = `https://api.whatsapp.com/send?text=${mensaje}`;
+---
+
+<div class="share" role="group" aria-label="Compartir noticia">
+  <span style="font-weight:600;font-size:.9375rem">Compartir noticia:</span>
+  <a class="share-btn whatsapp" href={waUrl} target="_blank" rel="noopener noreferrer">
+    ✆ Compartir por WhatsApp
+  </a>
+  <button class="share-btn" type="button" data-copy>
+    ⧉ Copiar enlace
+  </button>
+</div>
+
+<script>
+  document.querySelector('[data-copy]')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget as HTMLButtonElement;
+    try {
+      await navigator.clipboard.writeText(location.href);
+      btn.textContent = '✓ Enlace copiado';
+      setTimeout(() => (btn.textContent = '⧉ Copiar enlace'), 2500);
+    } catch {
+      btn.textContent = 'No se pudo copiar';
+    }
+  });
+</script>

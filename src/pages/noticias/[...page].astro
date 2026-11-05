@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import Advertisement from '../../components/Advertisement.astro';
+import '../../styles/global.css';
+
+export async function getStaticPaths({ paginate }) {
+  const noticias = (await getCollection('noticias', ({ data }) => !data.borrador))
+    .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+  return paginate(noticias, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout
+  title={`Últimas noticias${page.currentPage > 1 ? ` — Página ${page.currentPage}` : ''} — Nuestra Clorinda`}
+  description="Todas las noticias publicadas en Nuestra Clorinda, ordenadas por fecha."
+>
+  <Header slot="header" />
+  <Breadcrumbs items={[{ nombre: 'Inicio', url: '/' }, { nombre: 'Últimas noticias' }]} />
+
+  <div class="container section">
+    <div class="section-header">
+      <h1 style="font-size:1.75rem">Últimas noticias</h1>
+    </div>
+    <div class="grid grid-3">
+      {page.data.map((n) => <NewsCard noticia={n} />)}
+    </div>
+
+    <nav aria-label="Paginación">
+      <ul class="pagination">
+        {page.url.prev && <li><a class="btn" href={page.url.prev}>← Anterior</a></li>}
+        <li><span class="meta" style="align-self:center">Página {page.currentPage} de {page.lastPage}</span></li>
+        {page.url.next && <li><a class="btn" href={page.url.next}>Siguiente →</a></li>}
+      </ul>
+    </nav>
+  </div>
+
+  <Advertisement formato="leaderboard" />
+  <Footer slot="footer" />
+</BaseLayout>

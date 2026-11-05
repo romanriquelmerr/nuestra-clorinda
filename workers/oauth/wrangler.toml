@@ -1,0 +1,9 @@
+name = "nuestra-clorinda-oauth"
+main = "worker.js"
+compatibility_date = "2024-09-25"
+
+[vars]
+# Con repositorio PÚBLICO alcanza "public_repo". Si el repo es privado usar "repo".
+OAUTH_SCOPE = "public_repo"
+
+# Los secretos NO van acá: usar `npx wrangler secret put NOMBRE`

@@ -1,0 +1,25 @@
+---
+import NewsCard from './NewsCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  categoria: { slug: string; nombre: string };
+  noticias: CollectionEntry<'noticias'>[];
+}
+
+const { categoria, noticias } = Astro.props;
+---
+
+{noticias.length > 0 && (
+  <section class="section" aria-labelledby={`cat-${categoria.slug}`}>
+    <div class="container">
+      <div class="section-header">
+        <h2 id={`cat-${categoria.slug}`}>{categoria.nombre}</h2>
+        <a href={`/categoria/${categoria.slug}`}>Ver todas</a>
+      </div>
+      <div class="grid grid-3">
+        {noticias.slice(0, 3).map((n) => <NewsCard noticia={n} />)}
+      </div>
+    </div>
+  </section>
+)}
