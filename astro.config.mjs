@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 
 // Reemplazar por el dominio real del medio
 export default defineConfig({
-  site: 'https://tudominio.com',
+  site: 'https://nuestra-clorinda.pages.dev',
   output: 'static',
   integrations: [sitemap()],
   markdown: {
