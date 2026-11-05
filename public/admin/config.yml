@@ -17,8 +17,11 @@
 # ─────────────────────────────────────────────────────────────────
 backend:
   name: github
-  repo: TU_USUARIO/TU_REPOSITORIO      # ← REEMPLAZAR
+  repo: romanriquelmerr/nuestra-clorinda
   branch: main
+  base_url: https://nuestra-clorinda-oauth.jugadores.workers.dev
+  auth_endpoint: auth
+
   # auth_endpoint: https://tu-worker.tu-usuario.workers.dev/auth   # ← REEMPLAZAR (producción)
 
 # Descomentar para desarrollo local con decap-server:
