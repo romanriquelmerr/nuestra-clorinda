@@ -21,5 +21,3 @@ El intendente de Clorinda, Ariel Caniza, recibió esta mañana en su despacho de
 Durante la reunión, las autoridades dialogaron sobre la importancia de sostener una comunicación constante y fluida, y de trabajar con cooperación mutua entre Clorinda y el vecino país.
 
 Desde el Municipio se reafirmó el compromiso de seguir trabajando de manera conjunta por el bienestar y la integración de ambos pueblos, en una ciudad que comparte frontera y vida cotidiana con Paraguay.
-
-**Frase para redes:** 🤝 Clorinda y Paraguay, más cerca. El intendente Ariel Caniza recibió a la cónsul paraguaya y dialogaron sobre cooperación e integración entre ambos pueblos.
