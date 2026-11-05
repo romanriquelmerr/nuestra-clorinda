@@ -1,20 +1,4 @@
-# ─────────────────────────────────────────────────────────────────
 # Decap CMS — Nuestra Clorinda
-#
-# PRODUCCIÓN (GitHub OAuth vía Cloudflare Worker):
-#   1. Crear una GitHub OAuth App:
-#      GitHub → Settings → Developer settings → OAuth Apps → New OAuth App
-#      - Homepage URL: https://tudominio.com
-#      - Authorization callback URL: https://tu-worker.tu-usuario.workers.dev/callback
-#   2. Desplegar el Worker (ver workers/oauth/):
-#      cd workers/oauth && npx wrangler deploy
-#      npx wrangler secret put GITHUB_CLIENT_ID
-#      npx wrangler secret put GITHUB_CLIENT_SECRET
-#   3. Completar abajo: repo, branch y auth_endpoint del Worker.
-#
-# DESARROLLO LOCAL:
-#   Comentar todo el bloque `backend` y usar `npx decap-server`.
-# ─────────────────────────────────────────────────────────────────
 backend:
   name: github
   repo: romanriquelmerr/nuestra-clorinda
@@ -22,13 +6,15 @@ backend:
   base_url: https://nuestra-clorinda-oauth.jugadores.workers.dev
   auth_endpoint: auth
 
-  # auth_endpoint: https://tu-worker.tu-usuario.workers.dev/auth   # ← REEMPLAZAR (producción)
-
 # Descomentar para desarrollo local con decap-server:
 # local_backend: true
 
-# Las imágenes se guardan junto a cada noticia (src/content/noticias/) para que
-# Astro las optimice. Ver `media_folder: ""` en la colección más abajo.
+# Los enlaces se arman con el campo "Enlace corto", sin tildes ni espacios.
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
 media_folder: public/uploads
 public_folder: /uploads
 
@@ -42,7 +28,8 @@ collections:
     media_folder: ""          # imagen guardada en la misma carpeta que la noticia
     public_folder: "./"       # y referenciada como ./archivo.jpg
     create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    identifier_field: titulo
+    slug: "{{fields.slug}}"
     sortable_fields: ["fecha", "titulo"]
     view_filters:
       - label: Borradores
@@ -55,6 +42,7 @@ collections:
         field: destacada
         pattern: true
     fields:
+      - { label: "Enlace corto (sin tildes, con guiones)", name: "slug", widget: "string", required: true, hint: "Ejemplo: intendente-recibio-consulado-paraguayo" }
       - { label: "Título", name: "titulo", widget: "string", required: true }
       - { label: "Bajada", name: "bajada", widget: "text", required: true }
       - { label: "Imagen principal", name: "imagen", widget: "image", required: true }
