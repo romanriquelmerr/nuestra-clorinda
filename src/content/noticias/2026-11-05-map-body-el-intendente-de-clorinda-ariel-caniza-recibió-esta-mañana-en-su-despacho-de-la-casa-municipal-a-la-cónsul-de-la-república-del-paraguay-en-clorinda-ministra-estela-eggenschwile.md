@@ -1,4 +1,5 @@
 ---
+slug: El intendente Caniza recibió a autoridades del Consulado de Paraguay
 titulo: El intendente Caniza recibió a autoridades del Consulado de Paraguay en
   Clorinda
 bajada: >
@@ -6,7 +7,7 @@ bajada: >
   Estela Eggenschwiler, y al oficial consular Edward Paniagua. Dialogaron sobre
   la importancia de mantener una comunicación constante entre ambas ciudades
   fronterizas.
-imagen: 888506678_2588925311739437_9219700614417713112_n.webp
+imagen: consulado.webp
 categoria: politica
 fecha: 2026-11-05T18:59:00-03:00
 autor: ""
