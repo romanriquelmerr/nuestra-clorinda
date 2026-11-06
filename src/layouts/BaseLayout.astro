@@ -10,7 +10,8 @@ interface Props {
 const { title, description, image, canonical, type = 'website' } = Astro.props;
 const siteName = 'Nuestra Clorinda';
 const siteUrl = Astro.site ?? new URL(Astro.url);
-const ogImage = image ? new URL(image, siteUrl) : undefined;
+// Si la página no trae foto (portada, categorías), se usa el logo al compartir.
+const ogImage = new URL(image ?? '/logo.png', siteUrl);
 ---
 
 <!doctype html>
@@ -29,14 +30,14 @@ const ogImage = image ? new URL(image, siteUrl) : undefined;
   <meta property="og:type" content={type} />
   <meta property="og:site_name" content={siteName} />
   <meta property="og:locale" content="es_AR" />
-  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta property="og:image" content={ogImage} />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
-  {ogImage && <meta name="twitter:image" content={ogImage} />}
+  <meta name="twitter:image" content={ogImage} />
 
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
   <link rel="alternate" type="application/rss+xml" title="Nuestra Clorinda" href="/rss.xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
