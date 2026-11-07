@@ -6,7 +6,7 @@ bajada: La ceremonia formalizó la asunción del hasta entonces vicepresidente,
   luego de que el Senado destituyera a Peña por “mal desempeño de funciones”.
   Alliana completará el mandato hasta 2028.
 imagen: pedroallana.webp
-categoria: region
+categoria: politica
 fecha: 2026-11-07T10:04:00-03:00
 autor: ""
 destacada: false
