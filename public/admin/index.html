@@ -5,11 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex" />
   <title>Administración — Nuestra Clorinda</title>
+  <style>
+    html.dark { filter: invert(1) hue-rotate(180deg); background: #fff; }
+    html.dark img, html.dark video, html.dark iframe { filter: invert(1) hue-rotate(180deg); }
+    #modo-oscuro {
+      position: fixed; left: 16px; bottom: 16px; z-index: 99999;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid #888; background: #fff; color: #111;
+      font-size: 20px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.25);
+    }
+  </style>
 </head>
 <body>
-  <!-- Para desarrollo local con autenticación de prueba, ejecutar:
-       npx decap-server
-       desde la raíz del proyecto y entrar a http://localhost:4321/admin -->
+  <button id="modo-oscuro" type="button" title="Cambiar entre modo oscuro y claro" aria-label="Cambiar modo oscuro">🌙</button>
+  <script>
+    (function () {
+      var KEY = 'admin-oscuro';
+      var oscuro = true;
+      try { oscuro = localStorage.getItem(KEY) !== '0'; } catch (e) {}
+      function aplicar() {
+        document.documentElement.classList.toggle('dark', oscuro);
+        try { localStorage.setItem(KEY, oscuro ? '1' : '0'); } catch (e) {}
+      }
+      aplicar();
+      document.getElementById('modo-oscuro').addEventListener('click', function () {
+        oscuro = !oscuro;
+        aplicar();
+      });
+    })();
+  </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
