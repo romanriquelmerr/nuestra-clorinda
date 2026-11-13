@@ -9,8 +9,8 @@ imagen: image_1794313135465_cropped.webp
 categoria: policiales
 fecha: 2026-11-10T09:14:00-03:00
 autor: Redacción
-destacada: false
-ultimaHora: false
+destacada: true
+ultimaHora: true
 borrador: false
 ---
 Empleados del servicio de recolección de la Municipalidad de Clorinda fueron agredidos en la zona sur de la ciudad por dos hombres que, según trascendió, habrían manifestado ser efectivos policiales.
