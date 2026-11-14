@@ -14,13 +14,13 @@ borrador: false
 ---
 Efectivos de la Delegación Drogas Peligrosas realizaron dos allanamientos simultáneos en domicilios del barrio San Miguel de Clorinda, a la vera de la Ruta Nacional N.º 86. Hubo un detenido y un importante secuestro de estupefacientes.
 
-La investigación
+**La investigación**
 
 El operativo fue resultado de una investigación sobre la presunta venta de drogas al menudeo, en la que estaban involucrados una mujer y un hombre. Con los elementos reunidos, los investigadores pidieron las órdenes judiciales.
 
 Los allanamientos fueron autorizados por la jueza subrogante del Juzgado de Instrucción y Correccional N.º 1 de la Primera Circunscripción Judicial, Dra. Nadia Soledad Caballero. Participó personal de Drogas Peligrosas Clorinda, con la colaboración de otras dependencias de la Policía de Formosa.
 
-Un detenido y lo secuestrado
+**Un detenido y lo secuestrado**
 
 Se detuvo a uno de los investigados, un hombre mayor de edad. Continúa la búsqueda de la mujer presuntamente involucrada. En las requisas se secuestraron:
 
@@ -31,7 +31,9 @@ Tres teléfonos celulares
 $276.500 en efectivo
 Elementos para el corte y el almacenamiento de sustancias
 Retazos de polietileno
-La causa
+
+
+**La causa**
 
 Según la información oficial, el procedimiento permitió desarticular dos puntos de presunta comercialización y distribución de drogas. El detenido quedó a disposición del Juzgado, en una causa por presunta infracción a la Ley Nacional N.º 23.737 de Estupefacientes.
 
