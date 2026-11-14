@@ -8,8 +8,8 @@ imagen: 906580001_1781558126276083_7731745996761393368_n.webp
 categoria: policiales
 fecha: 2026-11-14T14:43:00-03:00
 autor: Redacción
-destacada: false
-ultimaHora: false
+destacada: true
+ultimaHora: true
 borrador: false
 ---
 Personal del Grupo de Operaciones Motorizadas, Sección Clorinda, recuperó una motocicleta marca Honda, modelo Wave, que había sido sustraída durante la noche del viernes.
